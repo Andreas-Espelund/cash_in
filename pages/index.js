@@ -20,7 +20,7 @@ function page() {
 
         {session ?
         <>
-          <h2 className="text-4xl font-bold">Welcome {session?.user?.firstname}</h2>
+          <h2 className="text-4xl font-bold">Welcome {session?.user?.uid}</h2>
           
           <Image src={session?.user?.image} width={200} height={200} alt=""/>
           

@@ -1,25 +1,16 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import Button from './Button';
 import Alert from './Alert';
+import { useRecoilState } from 'recoil';
+import { UserState } from '../atoms/userAtom'
 
 export default function UserSettings({handleClose}) {
-  
   const [errorVis, setErrorVis] = useState(false)
-  const [user, setuser] = useState({
-    name: '',
-    orgNr: '',
-    streetAdress: '',
-    zipLocation: '',
-    email: '',
-    contactName: '',
-    accountNumber: '',
-    currentInvoice: 0
-  });
-
+  const [user, setUser] = useRecoilState(UserState)
+  
   const handleChange = event => {
     const { name, value } = event.target
-    setuser( prev => ({...prev, [name]:value}))
+    setUser( prev => ({...prev, [name]:value}))
   }
 
   const validate = () => {
@@ -40,12 +31,12 @@ export default function UserSettings({handleClose}) {
   }
   // write new user data to server
   const handleSave = (e) => {
-      console.log(user)
-      if (!validate()) {return}
-      
-      // update user in db
-      handleClose()
-    }
+    console.log(user)
+    if (!validate()) {return}
+    
+    // update user in db
+    handleClose()
+  }
   // do nothing, go back
   const handleDiscard = (e) => {
     console.log("Discarding changes")
