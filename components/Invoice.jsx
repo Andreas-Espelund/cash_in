@@ -1,11 +1,15 @@
 import React from 'react'
 import logo from '../public/jackbow.jpg'
 import Image from 'next/image'
-export default function Invoice({user, invoiceData, customer}) {
+export default function Invoice({user, invoiceData, customer, lines}) {
+    const total_price = lines.reduce((total, a) => total+ parseFloat(a.price), 0)
+    const total_vat = lines.reduce((total, a) => total + parseFloat(a.vat)* parseFloat(a.price)/100, 0)
+    const total_sum = total_price + total_vat
+
   return (
     <div id="invoice-content" className="w-[157.5mm] h-[222.5mm] p-4 grid grid-rows-6 grid-cols-2 gap-4">
           <div className="col-span-1 row-span-1">
-            <Image src={logo} className="m-auto h-[100%] w-auto"/>
+            <Image src={logo} alt="company logo" className="m-auto h-[100%] w-auto"/>
           </div>
 
           <div className="col-span-1 row-span-2 flex flex-col justify-start">
@@ -54,30 +58,29 @@ export default function Invoice({user, invoiceData, customer}) {
               <p className="font-bold">MVA</p>
               <p className="font-bold col-span-2">Total</p>
               <div className="col-span-10 my-2 border-b-2 border-black"/>
-              
-              <p className="col-span-4 text-start">Placeholder</p>
-              <p className="col-span-2">10 000kr</p>
-              <p>1</p>
-              <p>25%</p>
-              <p className="col-span-2">12 500kr</p>
-
-              <p className="col-span-4 text-start">Placeholder</p>
-              <p className="col-span-2">10 000kr</p>
-              <p>1</p>
-              <p>25%</p>
-              <p className="col-span-2">12 500kr</p>
-
-              
-              <div className="col-span-10 my-2 border-b border-black"/>
-              <p className="col-span-7 italic">Nettobelop</p>
-              <p className="col-span-3">10 000kr</p>
-              <p className="col-span-7 italic">Merverdiavgift</p>
-              <p className="col-span-3">2 500kr</p>
-              <p className="col-span-7 font-bold">Å BETALE</p>
-              <p className="col-span-3 font-bold">12 500kr</p>
-              
-
             </div>
+              {lines.map((item) => 
+                <div className="grid grid-cols-10 text-end">
+                  <p className="col-span-4 text-start">{item.description}</p>
+                  <p className="col-span-2">{item.price} kr</p>
+                  <p>{item.amount}</p>
+                  <p>{item.vat} %</p>
+                  <p className="col-span-2">{(item.price*item.amount*item.vat/100)+item.price*item.amount} kr</p>
+                </div>
+              )
+            }
+                
+            <div className="col-span-10 my-2 border-b border-black"/>
+            <div className="grid grid-cols-10 text-end">
+              <p className="col-span-7 italic">Nettobelop</p>
+              <p className="col-span-3">{total_price} kr</p>
+              <p className="col-span-7 italic">Merverdiavgift</p>
+              <p className="col-span-3">{total_vat} kr</p>
+              <p className="col-span-7 font-bold">Å BETALE</p>
+              <p className="col-span-3 font-bold">{total_sum} kr</p>
+            </div>
+
+            
           
           </div>
           
@@ -88,7 +91,7 @@ export default function Invoice({user, invoiceData, customer}) {
               <p>Faktura nr.:</p>
               <p>{user?.currentInvoice}</p>
               <p>Totalt beløp:</p>
-              <p className="font-bold">XXXX,XX</p>
+              <p className="font-bold">{total_sum}</p>
               <p>Bankkontonr.:</p>
               <p>{user?.accountNumber}</p>
             </div>

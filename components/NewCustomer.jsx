@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import Alert from './Alert';
 import Button from './Button';
+import { useSession } from 'next-auth/react';
+import { createCustomer } from '../firebase';
 export default function NewCustomer({handleClose}) {
 
-
+  const {data: session} = useSession()
   const [errorVis, setErrorVis] = useState(false)
   
   const [customerData, setCustomerData] = useState({
@@ -13,6 +15,7 @@ export default function NewCustomer({handleClose}) {
     orgNr: '',
     streetAdress: '',
     zipLocation: '',
+    userRelation: session.user?.uid
   });
 
   const handleChange = event => {
@@ -29,6 +32,7 @@ export default function NewCustomer({handleClose}) {
       && data.orgNr !== ""
       && data.streetAdress !== ""
       && data.zipLocation !== ""
+      && data.userRelation === session.user?.uid
     
     if (!valid){
       setErrorVis(true)
@@ -42,7 +46,7 @@ export default function NewCustomer({handleClose}) {
   }
   function handleCreate(){
     if (!validate()) {return}
-
+    createCustomer(customerData)
     // create customer in DB
     handleClose()
   }

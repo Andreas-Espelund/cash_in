@@ -3,10 +3,15 @@ import Button from './Button';
 import Alert from './Alert';
 import { useRecoilState } from 'recoil';
 import { UserState } from '../atoms/userAtom'
+import { updateUser } from '../firebase';
+import { useSession } from 'next-auth/react';
 
 export default function UserSettings({handleClose}) {
-  const [errorVis, setErrorVis] = useState(false)
+  
   const [user, setUser] = useRecoilState(UserState)
+  const [errorVis, setErrorVis] = useState(false)
+  
+  const {data: session} = useSession()
   
   const handleChange = event => {
     const { name, value } = event.target
@@ -31,10 +36,12 @@ export default function UserSettings({handleClose}) {
   }
   // write new user data to server
   const handleSave = (e) => {
-    console.log(user)
     if (!validate()) {return}
+    console.log("SAVING")
+    console.log(session.user?.uid)
+    console.log(user)
     
-    // update user in db
+    updateUser(session.user?.uid, user)
     handleClose()
   }
   // do nothing, go back

@@ -18,7 +18,7 @@ export default function Navbar() {
   
 
   return (
-    <div className="text-lg p-4 lg:px-8 h-20 bg-primary flex justify-between overflow-hidden">
+    <div className="text-lg p-4 lg:px-8 h-20 bg-primary flex justify-between">
         
         <Link href="/" className=" font-bold text-4xl">
           <Logo/>

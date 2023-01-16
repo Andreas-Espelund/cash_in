@@ -2,10 +2,18 @@ import React from 'react'
 import Invoice from '../components/Invoice'
 import { useState } from 'react'
 import Button from '../components/Button'
-import InvoiceEntry from '../components/InvoiceEntry'
+import jsPDF from 'jspdf'
+import { CustomersState } from '../atoms/customersAtom'
+import { UserState } from '../atoms/userAtom'
+import { useRecoilValue } from 'recoil'
+import { useSession } from 'next-auth/react'
+import { createNewInvoice } from '../firebase'
 export default function create() {
     
-    const [curID, setCurID] = useState(0)
+    const invoiceEntry = { amount: '',price: '',description:'',vat: ''}
+    const {data: session} = useSession()
+    const customers = useRecoilValue(CustomersState)
+    const user = useRecoilValue(UserState)
     const [items, setItems] = useState([])
     const [invoiceData, setInvoiceData] = useState(
         {
@@ -13,59 +21,80 @@ export default function create() {
             header: '',
             description: '',
             customer: '',
+            lines: []
         }
     )
-    
 
     const handleChange = (event) => {
         const {name, value} = event.target
         setInvoiceData(prev => ({...prev, [name]: value}))
     }
 
-    const customers = [{id:'', name:''},{id: 1, name:'malakoff'}]
-    
+
     const handleSubmit = () => {
+        console.log(items)
+    }
+
+    const serialiseItems = () => {
+        const res = items.map(e => e.amount + ';' + e.price + ';' + e.description + ';' + e.vat)
+        return res
         
     }
 
-  
+    const createInvoice = () => {
+        
+        const lines = serialiseItems()
+        const invoice = invoiceData
 
-    const handleAddItem = () => {
-        const values = [...items]
-        values.push(
-            { 
-                id:curID,
-                name:'i',
-                amount: '1',
-                price: '',
-                description:'',
-                vat: '25',
-            }
-        )
-        setCurID(e => e+1)
-        setItems(values)
+        invoice['lines'] = lines
+        invoice['number'] = user.currentInvoice
+        invoice['user'] = session?.user?.uid
+        incrementInvoiceNumber()
+        createNewInvoice(invoice)
+        generatePdf()
     }
 
-    const handleItemsChange = (e) => {
 
+    const generatePdf = () => {
+        const content = document.getElementById('invoice_wrapper')
+        const doc = new jsPDF('p','pt','a4')
+        doc.html(content, {
+            callback: (pdf) => pdf.save(`invoice_${user.currentInvoice}.pdf`)
+        })
+    }
+
+
+    
+    const incrementInvoiceNumber = () => {
+
+    }
+    const handleAddItem = () => {
+        setItems([...items, invoiceEntry])
+    }
+
+    const handleItemsChange = (index, event) => {
+        let data = [...items]
+        const { name, value } = event.target
+        data[index][name] = value
+        setItems(data)
     }
 
     const onDelete = (index) => { 
         const values = [...items]
-        const res = values.filter( e => e.id !== index)
-        setItems(res)
+        values.splice(index,1)
+        setItems(values)
     }
 
     return (
-    <div className="flex h-full p-4 justify-evenly">
-        <div className="w-1/2">
+    <div className="flex h-full lg:p-10 justify-evenly  flex-col gap-10 lg:flex-row items-center lg:items-start">
+        <div className="w-4/5 lg:w-1/2">
             <div className="flex flex-col gap-4">
                 <h1 className="text-4xl font-semibold text-primary">New invoice</h1>
                 <div className="flex gap-4">
                     <label className="flex flex-1 flex-col text-xl">
                         Customer
                         <select name="customer" value={invoiceData.customer} onChange={handleChange} className="p-4 rounded-lg" >
-                            {customers.map(e => <option value={e.id}>{e.name}</option>)}
+                            {customers.map(e => <option key={e.orgNr} value={e.orgNr}>{e.name}</option>)}
                         </select>
                     </label>
 
@@ -90,19 +119,46 @@ export default function create() {
                     <Button text="Add" intent="neutral" onClick={()=> handleAddItem()}/>
 
                 </div>
-                {items.map((item, index) =>
-                    <InvoiceEntry data={item} onChange={handleItemsChange} onDelete={onDelete} label={index}/>
+                {items.map((input, index) =>
+                    <div className="flex gap-4 items-end w-full" key={index}>
+                    <p className="py-4 font-semibold text-lg"> {index+1} </p>
+                    <label className="flex flex-col max-w-[80px]">
+                        Amount
+                        <input type="number" name="amount" onChange={event => handleItemsChange(index, event)} value={input.amount} className="p-4 rounded-lg"/>
+                    </label>
+                    <label className="flex-1 flex flex-col">
+                        Description
+                        <input type="text" name="description" onChange={event => handleItemsChange(index, event)} value={input.description} className="p-4 rounded-lg"/>
+                    </label>
+            
+                    <label className="flex flex-col ">
+                        Price
+                        <input type="number" name="price" onChange={event => handleItemsChange(index, event)} value={input.price} className="p-4 rounded-lg"/>
+                    </label>
+            
+                    <label className="flex flex-col max-w-[80px]">
+                        Vat. (%)
+                        <input type="number" name="vat" onChange={event => handleItemsChange(index, event)} value={input.vat} className="p-4 rounded-lg"/>
+                    </label>
+            
+                    <button className="py-4 rounded-full text-zinc-400 hover:text-red-400 hover:scale-125" onClick={() => onDelete(index)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>  
+                </div>
+                    
+                    
                 )}
-                
-
                 <div className="flex gap-4 justify-end">
+                    <button onClick={createInvoice}>submit</button>
                     <Button text="Cancel" intent="danger" onClick={()=> window.location.href="/"}/>
-                    <Button text="Generate" onClick={handleSubmit}/>
+                    <Button text="Generate" onClick={createInvoice}/>
                 </div>
             </div>
         </div>
-        <div className="rounded-xl shadow-lg bg-white ">
-            <Invoice invoiceData={invoiceData}/>
+        <div className=" rounded-xl shadow-lg bg-white" id="invoice_wrapper">
+            <Invoice user={user} invoiceData={invoiceData}  customer={customers.filter(e => e.orgNr == invoiceData.customer)[0]} lines={items}/>
         </div>
     </div>
   )

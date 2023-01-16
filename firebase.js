@@ -23,16 +23,19 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = !getApps().length ?  initializeApp(firebaseConfig) : getApp()
-const analytics = getAnalytics(app);
 const db = getFirestore(app)
 
 
 
-const getCustomers = async () => {
+const getCustomers = async (uid) => {
   const res = []
   const querySnapshot = await getDocs(collection(db, "customers"));
   querySnapshot.forEach((doc) => { res.push(doc.data())})
-return res
+  console.log(`FETCHING CUSTOMERS for ${uid}`)
+  console.log(res)
+
+  return res.filter(e => e.userRelation == uid)
+
 }
 
 const getUser = async (uid) => {
@@ -46,12 +49,21 @@ const getUser = async (uid) => {
   }
 }
 
+const createNewInvoice = async (invoice) => {
+  try{
+    await addDoc(collection(db,'invoices'),invoice)
+    console.log(`Sucessfully created ${invoice.number}`)
+  } catch (error) {
+    console.log(`ERROR! Unable to create ${invoice.number}`)
+  }
+}
+
 
 
 // Add a new document in collection "customers"
-const createCustomer = async (uid,customer) => {
+const createCustomer = async (customer) => {
   try{
-    await setDoc(doc(db, "customers", uid),customer)
+    await setDoc(doc(db, "customers", customer.orgNr),customer)
     console.log(`Sucessfully created '${customer.name}' in db`)
 
   } catch (error) {
@@ -59,9 +71,9 @@ const createCustomer = async (uid,customer) => {
   }
 }
 
-const updateUser = async (user) => {
+const updateUser = async (uid, user) => {
   try{
-    await setDoc(doc(db, "users", user.uid),user)
+    await setDoc(doc(db, "users", uid),user)
     console.log(`Sucessfully created '${user.name}' in db`)
 
   } catch (error) {
@@ -70,4 +82,4 @@ const updateUser = async (user) => {
 }
 
 
-export {getCustomers, getUser, createCustomer, updateUser }
+export {getCustomers, getUser, createCustomer, updateUser, createNewInvoice}

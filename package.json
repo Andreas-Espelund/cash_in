@@ -12,6 +12,7 @@
     "class-variance-authority": "^0.4.0",
     "firebase": "^9.15.0",
     "framer-motion": "^8.4.3",
+    "jspdf": "^2.5.1",
     "next": "13.1.2",
     "next-auth": "^4.18.8",
     "react": "18.2.0",
