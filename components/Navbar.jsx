@@ -18,14 +18,14 @@ export default function Navbar() {
   
 
   return (
-    <div className="text-lg p-4 px-8 h-20 bg-primary flex justify-between overflow-hidden">
+    <div className="text-lg p-4 lg:px-8 h-20 bg-primary flex justify-between overflow-hidden">
         
         <Link href="/" className=" font-bold text-4xl">
           <Logo/>
         </Link>
         {session &&
         <div className="flex flex-1  items-center justify-end gap-10 font-semibold text-secondary ">
-          <p>{session.user?.name}</p>
+          <p className="hidden lg:block">{session.user?.name}</p>
           <button className="relative h-full aspect-square" onClick={() => setDropdownOpen(e => !e)}>
             <Image src={session?.user?.image} fill alt="" className="rounded-full"/>    
           </button>
@@ -40,7 +40,7 @@ export default function Navbar() {
       >
           {dropdownOpen &&
           <motion.div 
-            className="flex flex-col fixed top-24 p-4 gap-4 rounded-lg shadow-lg right-4 bg-white w-fit"
+            className="flex flex-col fixed top-24 p-4 gap-4 rounded-lg shadow-lg right-4 bg-white w-[90vw]  lg:w-fit"
             initial={{opacity:0}}  
             animate={{opacity:1}}  
             exit={{opacity:0}}

@@ -7,7 +7,7 @@ const button = cva('outline-primary', {
       intent: {
         primary: "bg-secondary text-white font-semibold rounded-lg border-green-400",
         danger: "bg-red-400 text-white font-semibold rounded-lg border-red-400",
-        neutral: "bg-gray-200 font-semibold rounded-lg border-gray-200",
+        neutral: "bg-gray-300 font-semibold rounded-lg border-gray-300",
         // **or**
         // primary: "bg-blue-500 text-white border-transparent hover:bg-blue-600",
         secondary: [
@@ -33,6 +33,7 @@ const button = cva('outline-primary', {
       intent: "primary",
       size: "medium",
       outlined: false,
+      fullWidth:false
     },
   });
 

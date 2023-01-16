@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../public/front.png'
+import logo from '../public/jackbow.jpg'
 import Image from 'next/image'
 export default function Invoice({user, invoiceData, customer}) {
   return (

@@ -26,7 +26,7 @@ function page() {
           
           
           <div className="w-full text-xl font-semibold grid grid-cols-2 gap-4 text-center text-white ">
-            <Link href="" className=" py-6 px-6 rounded-full bg-secondary hover:scale-105 transition-all active:scale-100">New invoice</Link>
+            <Link href="/create" className=" py-6 px-6 rounded-full bg-secondary hover:scale-105 transition-all active:scale-100">New invoice</Link>
             <Link href="" className=" py-6 px-6 rounded-full bg-secondary hover:scale-105 transition-all active:scale-100">New invoice</Link>
           </div>
         </>
