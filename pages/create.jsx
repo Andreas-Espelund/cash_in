@@ -5,15 +5,18 @@ import Button from '../components/Button'
 import jsPDF from 'jspdf'
 import { CustomersState } from '../atoms/customersAtom'
 import { UserState } from '../atoms/userAtom'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { useSession } from 'next-auth/react'
-import { createNewInvoice } from '../firebase'
+import { createNewInvoice, updateUser } from '../firebase'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 export default function create() {
     
+    const router = useRouter()
     const invoiceEntry = { amount: '',price: '',description:'',vat: ''}
     const {data: session} = useSession()
     const customers = useRecoilValue(CustomersState)
-    const user = useRecoilValue(UserState)
+    const [user, setUser] = useRecoilState(UserState)
     const [items, setItems] = useState([])
     const [invoiceData, setInvoiceData] = useState(
         {
@@ -66,7 +69,10 @@ export default function create() {
 
     
     const incrementInvoiceNumber = () => {
-
+        const curUser = {...user}
+        const no = parseInt(curUser['currentInvoice']) + 1        
+        curUser['currentInvoice'] = no
+        updateUser(session.user?.uid, curUser)
     }
     const handleAddItem = () => {
         setItems([...items, invoiceEntry])
@@ -83,6 +89,10 @@ export default function create() {
         const values = [...items]
         values.splice(index,1)
         setItems(values)
+    }
+
+    if (!session) {
+        return (<Link href='/auth/signin' className="absolute top-1/2 left-1/2 text-center py-2 px-6 bg-secondary text-white font-bold rounded-full hover:scale-105 transition-all">Sign in first</Link>)
     }
 
     return (
@@ -116,7 +126,7 @@ export default function create() {
 
                 <div className="flex justify-between">
                     <h2 className="text-xl">Items</h2>
-                    <Button text="Add" intent="neutral" onClick={()=> handleAddItem()}/>
+                    <Button intent="neutral" onClick={()=> handleAddItem()}>Add</Button>
 
                 </div>
                 {items.map((input, index) =>
@@ -151,9 +161,8 @@ export default function create() {
                     
                 )}
                 <div className="flex gap-4 justify-end">
-                    <button onClick={createInvoice}>submit</button>
-                    <Button text="Cancel" intent="danger" onClick={()=> window.location.href="/"}/>
-                    <Button text="Generate" onClick={createInvoice}/>
+                    <Button intent="danger" onClick={()=> router.back()}>Cancel</Button>
+                    <Button onClick={createInvoice}> Generate </Button>
                 </div>
             </div>
         </div>

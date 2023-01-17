@@ -19,8 +19,8 @@ const button = cva('outline-primary', {
       },
       size: {
         small: ["text-sm", "py-1", "px-2"],
-        medium: ["text-base", "py-2", "px-10"],
-        large: ["text-xl py-4 px-10"]
+        medium: ["text-base", "py-2", "px-4"],
+        large: ["text-xl py-4 px-6"]
       },
       outlined:{ 
           true: 'bg-transparent border-2 text-red-400'
@@ -46,8 +46,8 @@ export default function Button({text,intent, outlined, size, fullWidth, children
             onClick={onClick}
             whileHover={{scale:1.05}}
             whileTap={{scale:1}}
-            className={button({intent, size, outlined, fullWidth})}>
-            {text}
+            className={`${button({intent, size, outlined, fullWidth})} flex items-center justify-center gap-2`}>
+            {children}
         </motion.button>
   )
 }

@@ -2,7 +2,7 @@
 import { initializeApp, getApp, getApps } from "firebase/app";
 
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, doc, setDoc, addDoc, getDocs, getDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, setDoc, addDoc, getDocs, getDoc, query, where} from "firebase/firestore";
 
 
 const USER_ID = "920987494"
@@ -27,16 +27,7 @@ const db = getFirestore(app)
 
 
 
-const getCustomers = async (uid) => {
-  const res = []
-  const querySnapshot = await getDocs(collection(db, "customers"));
-  querySnapshot.forEach((doc) => { res.push(doc.data())})
-  console.log(`FETCHING CUSTOMERS for ${uid}`)
-  console.log(res)
 
-  return res.filter(e => e.userRelation == uid)
-
-}
 
 const getUser = async (uid) => {
   try {
@@ -58,6 +49,39 @@ const createNewInvoice = async (invoice) => {
   }
 }
 
+const fetchInvoicesByUser = async (uid) => {
+  try{
+    const q = query(collection(db, "invoices"), where("user", "==", uid));
+    const querySnapshot = await getDocs(q);
+    const res = []
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      res.push(doc.data())
+
+    })
+    return res
+
+  } catch (error) {
+    console.log(error)
+    console.log("ERROR! Unable to fech invoices")
+  }
+}
+
+const fetchCustomersByUser = async (uid) => {
+  const res = []
+  try{
+    const q = query(collection(db, "customers"), where("userRelation", "==", uid));
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => { res.push(doc.data())})
+    
+  } catch (error) {
+    console.log(error)
+    console.log("ERROR! Unable to fech customers")
+  }
+
+  return res
+
+}
 
 
 // Add a new document in collection "customers"
@@ -71,6 +95,8 @@ const createCustomer = async (customer) => {
   }
 }
 
+
+
 const updateUser = async (uid, user) => {
   try{
     await setDoc(doc(db, "users", uid),user)
@@ -82,4 +108,4 @@ const updateUser = async (uid, user) => {
 }
 
 
-export {getCustomers, getUser, createCustomer, updateUser, createNewInvoice}
+export {fetchCustomersByUser, getUser, createCustomer, updateUser, createNewInvoice, fetchInvoicesByUser}

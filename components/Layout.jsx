@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil'
 import { useSession } from 'next-auth/react'
 import { CustomersState } from '../atoms/customersAtom'
 import { UserState } from '../atoms/userAtom'
-import { getUser, getCustomers } from '../firebase'
+import { getUser, fetchCustomersByUser } from '../firebase'
 export default function Layout({children}) {
 
   const {data:session} = useSession()
@@ -21,7 +21,7 @@ export default function Layout({children}) {
         getUser(uid).then( u =>
           setUser(u)  
           )
-        getCustomers(uid).then( c => 
+        fetchCustomersByUser(uid).then( c => 
           setCustomers(c)  
         )
       }
