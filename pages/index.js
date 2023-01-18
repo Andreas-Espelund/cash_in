@@ -80,7 +80,7 @@ function page() {
 
         <div className="aspect-square bg-white rounded-xl p-10 flex flex-col gap-4 col-span-6 lg:col-span-3">
           <h2 className="font-semibold text-3xl text-primary">Status</h2>
-          <Piechart/>
+          <Piechart invoices={invoices}/>
         </div>
 
         <div className="aspect-square bg-white rounded-xl pt-10 px-10 flex flex-col gap-10 col-span-6 lg:col-span-3">
@@ -112,7 +112,7 @@ function page() {
                 <th className="text-start lg:p-4">Header</th>
                 <th className="text-start lg:p-4">Amount</th>
                 <th className="text-start lg:p-4 rounded-tr-lg lg:rounded-none">Status</th>
-                <th className="text-start hidden lg:block lg:p-4 rounded-tr-lg ">Export</th>
+                <th className="text-start hidden  lg:table-cell p-4 rounded-tr-lg ">Export</th>
               </tr>
             </thead>
             <tbody>

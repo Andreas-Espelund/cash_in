@@ -5,7 +5,7 @@ export default function PaymentStatus({status, dueDate}) {
   let style = 'text-white bg-green-400'
   
   if (!status){
-    if (new Date(dueDate) < new Date()){
+    if (new Date(dueDate).getTime() < new Date().getTime()){
       label = "overdue"
       style = "text-white bg-red-400"
     } else {

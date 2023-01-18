@@ -1,8 +1,14 @@
 import React from 'react'
 
-export default function Piechart() {
-  
-    const data = { paid: 4, waiting: 2, unpaid: 4 }
+export default function Piechart({invoices}) {
+    const today = new Date().getTime()
+    
+    const data = { 
+        waiting: invoices.filter(e => new Date(e.dueDate).getTime() <  today).length,
+        unpaid: invoices.filter(e => new Date(e.dueDate).getTime() >  today).length,
+        paid: 0
+    }
+
     const total = data.paid + data.unpaid + data.waiting
     
     const items = [
