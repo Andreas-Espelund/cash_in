@@ -7,9 +7,10 @@ module.exports = {
   theme: {
     extend: {
       colors:{
-        primary: '#3A878E',
-        secondary: '#14ECA3',
-        neutral:'#edf4f3'
+        primary: '#007ea7',
+        secondary: '#003249',
+        neutral:'#e1eced',
+        dark: '#003249'
         
       },
       gridTemplateColumns: {

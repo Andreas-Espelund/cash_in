@@ -5,7 +5,7 @@ import { cva, VariantProps } from 'class-variance-authority'
 const button = cva('outline-primary', {
     variants: {
       intent: {
-        primary: "bg-secondary text-white font-semibold rounded-lg border-green-400",
+        primary: "bg-secondary text-white font-semibold rounded-lg border-secondary",
         danger: "bg-red-400 text-white font-semibold rounded-lg border-red-400",
         neutral: "bg-gray-300 font-semibold rounded-lg border-gray-300",
         // **or**
@@ -23,7 +23,7 @@ const button = cva('outline-primary', {
         large: ["text-xl py-4 px-6"]
       },
       outlined:{ 
-          true: 'bg-transparent border-2 text-red-400'
+          true: 'bg-transparent border-2 text-secondary'
       },
       fullWidth:{
         true: 'w-full'
@@ -32,7 +32,7 @@ const button = cva('outline-primary', {
     defaultVariants: {
       intent: "primary",
       size: "medium",
-      outlined: false,
+      
       fullWidth:false
     },
   });
@@ -46,7 +46,7 @@ export default function Button({text,intent, outlined, size, fullWidth, children
             onClick={onClick}
             whileHover={{scale:1.05}}
             whileTap={{scale:1}}
-            className={`${button({intent, size, outlined, fullWidth})} flex items-center justify-center gap-2`}>
+            className={`${button({intent, size, outlined, fullWidth})} flex items-center justify-center gap-2 ${className}`}>
             {children}
         </motion.button>
   )

@@ -15,7 +15,7 @@ export default function PaymentStatus({status, dueDate}) {
   }
   
   return (
-    <p className={`px-3 py-1 font-semibold rounded-full lg:w-2/3 text-center ${style}`}>
+    <p className={`px-3 py-1 font-semibold rounded-full lg:w-4/5 text-center ${style}`}>
         {label}
     </p>
   )

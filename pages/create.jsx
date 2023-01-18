@@ -161,7 +161,7 @@ export default function create() {
                     
                 )}
                 <div className="flex gap-4 justify-end">
-                    <Button intent="danger" onClick={()=> router.back()}>Cancel</Button>
+                    <Button outlined={true} onClick={()=> router.back()}>Cancel</Button>
                     <Button onClick={createInvoice}> Generate </Button>
                 </div>
             </div>
