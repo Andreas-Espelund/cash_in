@@ -12,6 +12,7 @@ import { AnimatePresence } from 'framer-motion'
 import Modal from './Modal'
 import UserSettings from './UserSettings'
 import NewCustomer from './NewCustomer'
+
 export default function Layout({children}) {
 
   const {data:session} = useSession()
@@ -22,13 +23,11 @@ export default function Layout({children}) {
   
   
   useEffect(() => {
-    
       const uid = session?.user?.uid
       if (uid){
-
         getUser(uid).then( u =>
           setUser(u)  
-          )
+        )
         fetchCustomersByUser(uid).then( c => 
           setCustomers(c)  
         )

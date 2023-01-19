@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import Alert from './Alert';
-import Button from './Button';
+import { Button, Input, Alert } from '.';
 import { useSession } from 'next-auth/react';
 import { createCustomer } from '../firebase';
 export default function NewCustomer({handleClose}) {
@@ -41,7 +40,6 @@ export default function NewCustomer({handleClose}) {
   }
 
   function handleDiscard(){
-    console.log("discarding")
     handleClose()
   }
   function handleCreate(){
@@ -52,59 +50,61 @@ export default function NewCustomer({handleClose}) {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-10 border-2 m-4 rounded-lg shadow-lg bg-white">
+    <div className="grid grid-cols-2 gap-4 p-10 border-2 m-4 rounded-lg shadow-lg bg-white">
         
-        <h2 className="font-semibold text-3xl">Create new customer</h2>
-        <label className="flex flex-col">
-            Company name:
-            <input className="p-4 border-2 rounded-lg outline-green-400"
-            value={customerData.name}
-            name="name"
-            onChange={handleChange}
-            />
-        </label>
-        <label className="flex flex-col">
-            Org number:
-            <input type="number" className="p-4 border-2 rounded-lg outline-green-400"
-            value={customerData.orgNr}
-            name="orgNr"
-            onChange={handleChange}
-            />
-        </label>
-        <label className="flex flex-col">
-            Street adress:
-            <input type="text" className="p-4 border-2 rounded-lg outline-green-400"
-            value={customerData.streetAdress}
-            name="streetAdress"
-            onChange={handleChange}
-            />
-        </label>
-        <label className="flex flex-col">
-            ZIP code and area:
-            <input type="text" className="p-4 border-2 rounded-lg outline-green-400"
-            value={customerData.zipLocation}
-            name="zipLocation"
-            onChange={handleChange}
-            />
-        </label>
-        <label className="flex flex-col">
-            Email:
-            <input type="email" className="p-4 border-2 rounded-lg outline-green-400"
-            value={customerData.email}
-            name="email"
-            onChange={handleChange}
-            />
-        </label>
-        <label className="flex flex-col">
-            Contact person:
-            <input className="p-4 border-2 rounded-lg outline-green-400"
-            value={customerData.contactName}
-            name="contactName"
-            onChange={handleChange}
-            />
-        </label>
+        <h2 className="font-semibold text-3xl col-span-2">Create new customer</h2>
+        
+            
+        <Input
+        label="Company name:"
+        value={customerData.name}
+        name="name"
+        onChange={handleChange}
+        />
     
-        <div className="flex justify-end gap-4">
+        
+        <Input
+        label="Org number:"
+        value={customerData.orgNr}
+        name="orgNr"
+        onChange={handleChange}
+        />
+    
+        
+        <Input
+        label="Street adress:"
+        value={customerData.streetAdress}
+        name="streetAdress"
+        onChange={handleChange}
+        />
+    
+        
+        <Input
+        label="ZIP code and area:"
+        value={customerData.zipLocation}
+        name="zipLocation"
+        onChange={handleChange}
+        />
+    
+        
+        <Input
+        className="col-span-2"
+        label="Email:"
+        value={customerData.email}
+        name="email"
+        onChange={handleChange}
+        />
+    
+        
+        <Input
+        className="col-span-2"
+        label="Contact person:"
+        value={customerData.contactName}
+        name="contactName"
+        onChange={handleChange}
+        />
+    
+        <div className="flex justify-end gap-4 col-span-2">
             <Button  outlined={true} onClick={handleDiscard}> Cancel </Button>
             <Button onClick={handleCreate}> Create </Button>
         </div>

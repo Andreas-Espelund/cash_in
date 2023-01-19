@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
-import Button from './Button';
-import Alert from './Alert';
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { UserState } from '../atoms/userAtom'
 import { updateUser } from '../firebase';
 import { useSession } from 'next-auth/react';
-
+import { Button, Alert, Input } from '.';
 export default function UserSettings({handleClose}) {
   
   const [user, setUser] = useRecoilState(UserState)
@@ -37,102 +35,87 @@ export default function UserSettings({handleClose}) {
   // write new user data to server
   const handleSave = (e) => {
     if (!validate()) {return}
-    console.log("SAVING")
-    console.log(session.user?.uid)
-    console.log(user)
     
     updateUser(session.user?.uid, user)
     handleClose()
   }
   // do nothing, go back
   const handleDiscard = (e) => {
-    console.log("Discarding changes")
     handleClose()
   }
   return (
-    <div className="flex flex-col gap-4 p-10  m-4 rounded-lg shadow-lg bg-white">
+    <div className="grid grid-cols-2 gap-4 p-10  m-4 rounded-lg shadow-lg bg-white">
         
-        <h2 className="font-semibold text-3xl">Settings</h2>
-        <div className="flex justify-between gap-4">
-          <label className="flex flex-col flex-1">
-              Company name:
-              <input className="p-4 border-2 rounded-lg"
-              value={user.name}
-              name="name"
-              onChange={handleChange}
-              />
-          </label>
-          <label className="flex flex-col">
-              Org number:
-              <input type="number" className="p-4 border-2 rounded-lg"
-              value={user.orgNr}
-              name="orgNr"
-              onChange={handleChange}
-              />
-          </label>
-        </div>
-        <div className="flex justify-between gap-4">
-          <label className="flex flex-col flex-1">
-              Street adress:
-              <input type="text" className="p-4 border-2 rounded-lg"
-              value={user.streetAdress}
-              name="streetAdress"
-              onChange={handleChange}
-              />
-          </label>
-          <label className="flex flex-col ">
-              Zip code and location:
-              <input type="text" className="p-4 border-2 rounded-lg"
-              value={user.zipLocation}
-              name="zipLocation"
-              onChange={handleChange}
-              />
-          </label>
-        </div>
+      <h2 className="font-semibold text-3xl col-span-2">Settings</h2>
         
-        <div className="flex justify-between gap-4">
-          <label className="flex flex-col flex-1">
-              Bank account number:
-              <input className="p-4 border-2 rounded-lg"
-              value={user.accountNumber}
-              name="accountNumber"
-              onChange={handleChange}
-              />
-          </label>
+      <Input
+      label="Company name:"
+      value={user.name}
+      name="name"
+      onChange={handleChange}
+      />
 
-          <label className="flex flex-col">
-              Current invoice number:
-              <input className="p-4 border-2 rounded-lg"
-              value={user.currentInvoice}
-              name="currentInvoice"
-              onChange={handleChange}
-              />
-          </label>
-        </div>
-        <label className="flex flex-col">
-            Email:
-            <input type="email" className="p-4 border-2 rounded-lg"
-            value={user.email}
-            name="email"
-            onChange={handleChange}
-            />
-        </label>
-        <label className="flex flex-col">
-            Contact person:
-            <input className="p-4 border-2 rounded-lg"
-            value={user.contactName}
-            name="contactName"
-            onChange={handleChange}
-            />
-        </label>
+      <Input 
+      label="Org number:"
+      type="number"
+      value={user.orgNr}
+      name="orgNr"
+      onChange={handleChange}
+      />
+          
+      <Input
+      label="Street adress:"
+      type="text"
+      value={user.streetAdress}
+      name="streetAdress"
+      onChange={handleChange}
+      />
+  
+      <Input 
+      label="Zip code and location:"
+      type="text"
+      value={user.zipLocation}
+      name="zipLocation"
+      onChange={handleChange}
+      />
+       
+      <Input
+      label="Bank account number:"
+      value={user.accountNumber}
+      name="accountNumber"
+      onChange={handleChange}
+      />
+      
+      <Input
+      label="Current invoice number:"
+      value={user.currentInvoice}
+      name="currentInvoice"
+      onChange={handleChange}
+      />
     
-    
-        <div className="flex justify-end gap-4">
-            <Button  outlined={true} onClick={handleDiscard}> Cancel </Button>
-            <Button onClick={handleSave}> Save </Button>
-        </div>
+      <Input 
+      className="col-span-2"
+      label="Email:"
+      type="email"
+      value={user.email}
+      name="email"
+      onChange={handleChange}
+      />
+  
+      <Input
+      className="col-span-2"
+      label="Contact person:"
+      value={user.contactName}
+      name="contactName"
+      onChange={handleChange}
+      />
 
-        <Alert heading="Error" visible={errorVis} onClick={() => setErrorVis(false)}/>
+      <div className="col-span-2 flex justify-end gap-4">
+          <Button  outlined={true} onClick={handleDiscard}> Cancel </Button>
+          <Button onClick={handleSave}> Save </Button>
+      </div>
+
+      <Alert heading="Error" visible={errorVis} onClick={() => setErrorVis(false)}/>
     </div>
   );
 }

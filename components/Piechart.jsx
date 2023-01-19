@@ -1,47 +1,45 @@
 import React from 'react'
-
+import { TODAY } from '../tools/date'
 export default function Piechart({invoices}) {
-    const today = new Date().getTime()
+    let unpaid = 0, paid = 0, waiting = 0
     
-    const data = { 
-        waiting: invoices.filter(e => new Date(e.dueDate.seconds*1000).getTime() <  today).length,
-        unpaid: invoices.filter(e => new Date(e.dueDate.seconds*1000).getTime() >  today).length,
-        paid: 0
-    }
+    invoices.forEach(e => {
+        const due = new Date(e.dueDate.seconds*1000).getTime()
+        if (e.paid){ paid++ }
+        else if (due < TODAY.getTime()){ unpaid++ }
+        else { waiting ++ }
+    })
 
-    const total = data.paid + data.unpaid + data.waiting
-    
+    const total = unpaid + paid + waiting
+
     const items = [
         {
             label: 'Paid',
             color: 'bg-green-400',
-            level: data.paid/total*100,
-            amount: data.paid
+            level: paid/total*100,
+            amount: paid
         },
         {
             label: 'Waiting',
             color: 'bg-zinc-400',
-            level: data.waiting/total*100,
-            amount: data.waiting
+            level: waiting/total*100,
+            amount: waiting
         },
         {
             label: 'Overdue',
             color: 'bg-red-400',
-            level: data.unpaid/total*100,
-            amount: data.unpaid
+            level: unpaid/total*100,
+            amount: unpaid
         },
     ]
 
     const offset = 100 - items.map(a => a.level).sort().at(2)
-
     
     return (
-        <div className="h-full flex flex-col gap-2">
-            <div className="flex-1 w-full  grid grid-cols-3 gap-10 text-bottom">
+        <div className="min-w-full flex-1 gap-2 flex flex-col">
+            <div className="text-bottom flex flex-1 gap-10">
                 {items.map( item => 
-                    <div className={`${ item.color} p-4  w-full text-white rounded-lg font-semibold mt-auto`} style={{height:`${item.level+offset}%`}} > 
-                        
-                    </div>
+                    <div className={`${ item.color} p-4  w-full text-white rounded-lg font-semibold mt-auto`} style={{height:`${item.level+offset}%`}}/> 
                 )}
             </div>
             <div className="grid grid-cols-3 gap-10 text-center font-semibold">

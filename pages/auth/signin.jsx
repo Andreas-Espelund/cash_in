@@ -5,12 +5,14 @@ import google_icon from '../../public/google.svg'
 import Logo from '../../components/Logo'
 import { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+
 function signin({providers}) {
   const {data: session} = useSession()
-  
+  const router = useRouter()
   useEffect(() => {
     if (session){
-      window.location.href = "/"
+      router.push('/')
     }
   }, [session])
   
