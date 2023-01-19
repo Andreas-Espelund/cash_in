@@ -4,8 +4,8 @@ export default function Piechart({invoices}) {
     const today = new Date().getTime()
     
     const data = { 
-        waiting: invoices.filter(e => new Date(e.dueDate).getTime() <  today).length,
-        unpaid: invoices.filter(e => new Date(e.dueDate).getTime() >  today).length,
+        waiting: invoices.filter(e => new Date(e.dueDate.seconds*1000).getTime() <  today).length,
+        unpaid: invoices.filter(e => new Date(e.dueDate.seconds*1000).getTime() >  today).length,
         paid: 0
     }
 
@@ -36,13 +36,17 @@ export default function Piechart({invoices}) {
 
     
     return (
-    <div className="flex-1 w-full grid grid-cols-3 gap-10 text-bottom">
-        {items.map( item => 
-            <div className={`${ item.color} p-4 flex flex-col w-full text-white rounded-lg font-semibold items-center justify-end mt-auto`} style={{height:`${item.level+offset}%`}} > 
-                <p> {item.amount} </p>
-                <p> {item.label} </p>
+        <div className="h-full flex flex-col gap-2">
+            <div className="flex-1 w-full  grid grid-cols-3 gap-10 text-bottom">
+                {items.map( item => 
+                    <div className={`${ item.color} p-4  w-full text-white rounded-lg font-semibold mt-auto`} style={{height:`${item.level+offset}%`}} > 
+                        
+                    </div>
+                )}
             </div>
-            )}
-    </div>
+            <div className="grid grid-cols-3 gap-10 text-center font-semibold">
+                {items.map(e => <p>{e.amount} {e.label.toLowerCase()}</p>)}
+            </div>
+        </div>
   )
 }

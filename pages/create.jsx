@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { AnimatePresence } from 'framer-motion'
 import Calendar from 'react-calendar'
+import { motion } from 'framer-motion'
 import { Timestamp } from '@firebase/firestore'
 
 export default function create() {
@@ -134,13 +135,17 @@ export default function create() {
             <h2 className="text-xl col-span-2">Items</h2>
             
            
-            <div className="grid grid-cols-15 col-span-2 gap-4">
-                <p className=" col-span-2" >Amount</p>
-                <p className=" col-span-7" >Description</p>
-                <p className=" col-span-3" >Price</p>
-                <p className=" col-span-2" >Vat. (%)</p>
-                <p className="" ></p>
-
+            <div className="grid grid-cols-15 col-span-2 gap-4 bg-secondary rounded-xl p-2 text-neutral font-semibold">
+                <p className="p-2 col-span-2" >Amount</p>
+                <p className="p-2 col-span-7" >Description</p>
+                <p className="p-2 col-span-3" >Price</p>
+                <p className="p-2 col-span-2" >Vat. (%)</p>
+                
+                <button className="rounded-xl text-secondary bg-neutral hover:scale-95  transition-all"   onClick={()=> handleAddItem()}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-full h-full p-2 hover:p-1 transition-all active:p-2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                </button>
                 
 
             </div>
@@ -163,11 +168,7 @@ export default function create() {
                 
             )}
             
-            <Button className="ml-auto col-span-2" intent="neutral" onClick={()=> handleAddItem()}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-            </Button>
+            
             
           
             <div className="flex gap-4 justify-end col-span-2">
