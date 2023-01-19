@@ -33,9 +33,7 @@ export default function create() {
         }
     )
 
-    const objectById = (items, id) => {
-        return items.filter(e => e.orgNr == id).at(0)
-    }
+    
 
     const handleChange = (event) => {
         setStarted(true)
