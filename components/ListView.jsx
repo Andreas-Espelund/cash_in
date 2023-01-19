@@ -1,26 +1,24 @@
 import React from 'react'
 import PaymentStatus from './PaymentStatus'
 export default function ListView({invoice, number}) {
-    const getLineObjects = (lineStrings) => {
-        return lineStrings.map(e => {
-            const bits = e.split(';')
-            return {
-                amount: parseInt(bits[0]),
-                price: parseFloat(bits[1]),
-                description: bits[2],
-                vat: parseInt(bits[3])
-            }
-        })
+   
+    const getTotal = (e) => {
+        const total = e.vat? (e.price + e.price*e.vat/100) * e.amount : e.price * e.amount
+        console.log(total)
+        return total
     }
-
-    const lineObjects = getLineObjects(invoice.lines)
-    const total = lineObjects.reduce((acc, e) => acc + (e.price+e.price*e.vat/100) ,0)
+    
+    const total = invoice.lines.reduce((acc, e) => acc + getTotal(e) ,0).toLocaleString('nb-NO', {
+        style: 'currency',
+        currency: 'NOK',
+      }); /* $2,500.00 */
+    console.log(invoice.lines)
     return (
     <tr className={`${ number != 0? '' : 'border-b-2'} border-neutral`}>
         <td className="lg:p-4">{invoice.number}</td>
-        <td className="lg:p-4">{invoice.dueDate}</td>
+        <td className="lg:p-4">{new Date(invoice.dueDate.seconds*1000).toLocaleDateString('nb-NO',{ day:'2-digit', month:'2-digit', year:'2-digit'})}</td>
         <td className="lg:p-4">{invoice.header}</td>
-        <td className="lg:p-4">{total} kr</td>
+        <td className="lg:p-4">{total}</td>
         <td className="lg:p-4">
             <PaymentStatus status={invoice.paid} dueDate={invoice.dueDate}/>
         </td>

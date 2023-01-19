@@ -12,9 +12,6 @@ export default function InvoiceEntry({data, onDelete, label}) {
 
     return (
     <div className="flex gap-4 items-end w-full border-2">
-        <p className="py-4 font-semibold text-lg">
-        {label+1}
-        </p>
         <label className="flex flex-col max-w-[80px]">
             Amount
             <input type="number" name="amount" onChange={(event) => onChange(event, data.id)} value={data.amount} className="p-4 rounded-lg"/>

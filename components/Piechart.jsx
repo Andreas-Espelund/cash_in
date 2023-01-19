@@ -38,7 +38,7 @@ export default function Piechart({invoices}) {
     return (
     <div className="flex-1 w-full grid grid-cols-3 gap-10 text-bottom">
         {items.map( item => 
-            <div className={`${item.color} p-4 flex flex-col w-full text-white rounded-lg font-semibold items-center justify-end mt-auto`} style={{height:`${item.level+offset}%`}} > 
+            <div className={`${ item.color} p-4 flex flex-col w-full text-white rounded-lg font-semibold items-center justify-end mt-auto`} style={{height:`${item.level+offset}%`}} > 
                 <p> {item.amount} </p>
                 <p> {item.label} </p>
             </div>

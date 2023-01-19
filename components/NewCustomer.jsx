@@ -105,8 +105,8 @@ export default function NewCustomer({handleClose}) {
         </label>
     
         <div className="flex justify-end gap-4">
-            <Button text="Cancel" intent="danger" onClick={handleDiscard}/>
-            <Button text="Create"  onClick={handleCreate}/>
+            <Button  outlined={true} onClick={handleDiscard}> Cancel </Button>
+            <Button onClick={handleCreate}> Create </Button>
         </div>
 
         <Alert heading="Error" visible={errorVis} onClick={() => setErrorVis(false)} />

@@ -128,8 +128,8 @@ export default function UserSettings({handleClose}) {
     
     
         <div className="flex justify-end gap-4">
-            <Button intent="danger"  text="Cancel" onClick={handleDiscard}/>
-            <Button intent="primary" text="Save" onClick={handleSave}/>
+            <Button  outlined={true} onClick={handleDiscard}> Cancel </Button>
+            <Button onClick={handleSave}> Save </Button>
         </div>
 
         <Alert heading="Error" visible={errorVis} onClick={() => setErrorVis(false)}/>

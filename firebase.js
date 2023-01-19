@@ -46,6 +46,7 @@ const createNewInvoice = async (invoice) => {
     console.log(`Sucessfully created ${invoice.number}`)
   } catch (error) {
     console.log(`ERROR! Unable to create ${invoice.number}`)
+    console.log(error)
   }
 }
 
@@ -59,6 +60,13 @@ const fetchInvoicesByUser = async (uid) => {
       res.push(doc.data())
 
     })
+    console.log("TESTING FETCH")
+    
+    res.forEach((e) => {
+      try { return e['lines'] = JSON.parse(e.lines)}
+      catch (error) { return []}
+    })
+    console.log(res)
     return res
 
   } catch (error) {
