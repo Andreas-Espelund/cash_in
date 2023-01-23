@@ -1,14 +1,23 @@
 import React from 'react'
 import Image from 'next/image'
 import { timeToDateText } from '../tools/date'
+import { CustomersState } from '../atoms/customersAtom'
+import { useRecoilValue } from 'recoil'
 export default function Invoice({user, invoiceData }) {
+    const customers = useRecoilValue(CustomersState)
+    
+    const objectById = (items, id) => {
+      return items.filter(e => e.id == id).at(0)
+    }  
   
     const total_price = invoiceData?.lines.reduce((total, a) => total + a.price, 0)
-    const total_vat = invoiceData?.lines.reduce((total, a) => total + a.vat, 0)
+    const total_vat = invoiceData?.lines.reduce((total, a) => total + a.price * a.vat/100, 0)
     const total_sum = total_price + total_vat
     const currencyFormat = (price) => {
       return price.toLocaleString('nb-NO', {style: 'currency',currency: 'NOK',})
     }
+
+    const customer = objectById(customers, invoiceData.customer)
   
   return (
     <div id="invoice-content" className="w-[157.5mm] h-[222.5mm] p-4 grid grid-rows-6 grid-cols-2 gap-4">
@@ -28,7 +37,7 @@ export default function Invoice({user, invoiceData }) {
           <p>Vår referanse</p>
           <p>{user?.contactName}</p>
           <p>Deres referanse</p>
-          <p>{invoiceData.customer?.contactName}</p>
+          <p>{customer?.contactName}</p>
         </div>
         <div className="border-b-2 my-2"/>
         <div className="grid grid-cols-2 grid-rows-2">
@@ -41,10 +50,10 @@ export default function Invoice({user, invoiceData }) {
         </div>
       </div>
       <div className="col-span-1 row-span-1 flex flex-col justify-end">
-        <p className="font-bold">{invoiceData.customer?.name}</p>
-        <p>{invoiceData.customer?.orgNr}</p>
-        <p>{invoiceData.customer?.streetAdress}</p>
-        <p>{invoiceData.customer?.zipLocation}</p>
+        <p className="font-bold">{customer?.name}</p>
+        <p>{customer?.orgNr}</p>
+        <p>{customer?.streetAdress}</p>
+        <p>{customer?.zipLocation}</p>
       </div>
       <div className="col-span-2 row-span-3">
         <div className="py-4">

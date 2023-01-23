@@ -14,7 +14,7 @@ import Piechart from "./Piechart";
 import SingInPrompt from "./SignInPrompt";
 import UserSettings from "./UserSettings";
 import Input from './Input';
-
+import IconButton from './IconButton'
 export {
     Alert,
     Backdrop,
@@ -31,5 +31,6 @@ export {
     Piechart,
     SingInPrompt,
     UserSettings,
-    Input
+    Input,
+    IconButton
 }

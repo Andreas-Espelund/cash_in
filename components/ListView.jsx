@@ -6,6 +6,7 @@ import { Invoice } from '.'
 import { UserState } from '../atoms/userAtom'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { CustomersState } from '../atoms/customersAtom'
+import { updateInvoicePaymentStatus } from '../firebase'
 export default function ListView({invoice, number}) {
     
     const user = useRecoilValue(UserState)
@@ -40,7 +41,7 @@ export default function ListView({invoice, number}) {
         <td className="lg:p-4">{invoice.header}</td>
         <td className="lg:p-4">{total}</td>
         <td className="lg:p-4">
-            <PaymentStatus status={invoice.paid} dueDate={invoice.dueDate}/>
+            <PaymentStatus invoice={invoice}/>
         </td>
         <td className="p-4 hidden lg:block">
             <button onClick={() =>exportPDF(invoice.number, invoice.number)} className="flex items-center gap-1 select-none  min-w-3/4 rounded-full py-1 px-3 m-auto  hover:scale-[108%] active:scale-95 transition-all text-white bg-secondary font-semibold">

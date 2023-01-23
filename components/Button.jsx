@@ -20,7 +20,7 @@ const button = cva('outline-primary', {
         large: ["text-xl py-4 px-6"]
       },
       outlined:{ 
-          true: 'bg-transparent border-2 text-secondary'
+          true: 'bg-transparent border-2 text-[#003249]'
       },
       fullWidth:{
         true: 'w-full'

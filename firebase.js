@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApp, getApps } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, doc, setDoc, addDoc, getDocs, getDoc, query, where} from "firebase/firestore";
+import { getFirestore, collection, doc, setDoc, addDoc, getDocs, updateDoc, deleteDoc, getDoc, query, where} from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -33,16 +32,40 @@ const getUser = async (uid) => {
   }
 }
 
+const deleteCustomer = async (customerId) => {
+  try{
+    const docRef = doc(db,'customers',customerId)
+    await deleteDoc(docRef)
+    console.log(`Customer ${customerId} deleted successfully`)
+  }catch (error) {
+    console.log(error)
+  }
+}
+
 const createNewInvoice = async (invoice) => {
   try{
     await addDoc(collection(db,'invoices'),invoice)
-    
+    console.log("Sucessfully created new invoice")
   } catch (error) {
-    
+    console.log(error)
     
   }
 }
 
+
+const updateInvoicePaymentStatus = async (invoiceID, paid) => {
+  try{
+    const invoiceRef = doc(db, 'invoices', invoiceID)
+    await updateDoc(invoiceRef, {
+      paid: paid
+    })
+
+    console.log(`Sucessfully updated ${invoiceID} to paid`)
+  } catch (error) {
+    console.log(error)
+  }
+
+}
 const fetchInvoicesByUser = async (uid) => {
   try{
     const q = query(collection(db, "invoices"), where("user", "==", uid));
@@ -50,8 +73,9 @@ const fetchInvoicesByUser = async (uid) => {
     const res = []
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      res.push(doc.data())
-
+      const e = doc.data()
+      e['id'] = doc.id
+      res.push(e)
     })
     
     
@@ -73,26 +97,24 @@ const fetchCustomersByUser = async (uid) => {
   try{
     const q = query(collection(db, "customers"), where("userRelation", "==", uid));
     const querySnapshot = await getDocs(q)
-    querySnapshot.forEach((doc) => { res.push(doc.data())})
-    
+    querySnapshot.forEach((doc) => {   
+      const e = doc.data()
+      e['id'] = doc.id
+      res.push(e)
+    })
   } catch (error) {
-    
-    
+    console.log(error)
   }
-
   return res
-
 }
 
 
 // Add a new document in collection "customers"
 const createCustomer = async (customer) => {
   try{
-    await setDoc(doc(db, "customers", customer.orgNr),customer)
-    
-
+    await addDoc(collection(db, "customers"),customer)
   } catch (error) {
-    
+    console.log(error)
   }
 }
 
@@ -101,12 +123,19 @@ const createCustomer = async (customer) => {
 const updateUser = async (uid, user) => {
   try{
     await setDoc(doc(db, "users", uid),user)
-    
-
   } catch (error) {
-    
+   console.log(error) 
   }
 }
 
 
-export {fetchCustomersByUser, getUser, createCustomer, updateUser, createNewInvoice, fetchInvoicesByUser}
+export {
+  fetchCustomersByUser,
+  getUser,
+  createCustomer,
+  updateUser,
+  createNewInvoice,
+  fetchInvoicesByUser,
+  updateInvoicePaymentStatus,
+  deleteCustomer
+}
