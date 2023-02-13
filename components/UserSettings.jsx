@@ -44,7 +44,7 @@ export default function UserSettings({handleClose}) {
     handleClose()
   }
   return (
-    <div className="grid grid-cols-2 gap-4 p-10  m-4 rounded-lg shadow-lg bg-white">
+    <div className="grid grid-cols-2 gap-4 p-10  m-4 rounded-lg shadow-lg bg-neutral">
         
       <h2 className="font-semibold text-3xl col-span-2">Settings</h2>
         

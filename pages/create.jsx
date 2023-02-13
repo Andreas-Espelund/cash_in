@@ -99,7 +99,7 @@ export default function create() {
             
             <label className="flex flex-1 flex-col text-xl">
                 Customer
-                <select name="customer" value={invoiceData.customer} onChange={handleChange} className="p-4 rounded-lg border-2 focus:border-secondary outline-none" >
+                <select name="customer" value={invoiceData.customer} onChange={handleChange} className="p-4 rounded-lg outline-zinc-200" >
                     <option key={-1} value={null}></option>
                     {customers.map(e => <option key={e.orgNr} value={e.id}>{e.name}</option>)}
                 </select>

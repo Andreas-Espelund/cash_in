@@ -10,7 +10,7 @@ export default function Input({value, className, type, onChange, name, id, label
           type={type}
           onChange={onChange}
           id={id}
-          className={`p-4 rounded-lg outline-none border-2 focus:border-secondary`}
+          className={`p-4 rounded-lg outline-zinc-200 `}
         />
     </label>
   )

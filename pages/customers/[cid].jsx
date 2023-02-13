@@ -21,8 +21,8 @@ export default function Customer() {
   
   const customer = objectById(customers, cid)
 
-  const handleDelete = () => {
-    deleteCustomer(customer.id)
+  const handleDelete = (id) => {
+    deleteCustomer(id)
     const res = customers.filter((e) => e.id !== cid)
     setCustomers(res)
     router.push('/')
@@ -32,8 +32,8 @@ export default function Customer() {
   if (!customer) {
     return (
       <div className="h-full grid place-content-center text-center gap-4">
-          <p className="text-5xl">LOL</p>
-          <p>Customer not found</p>
+          <p className="text-5xl">...</p>
+          
           <Link href="/" className="py-4 px-8 font-semibold text-white bg-primary rounded-full">Go back</Link>
       </div>
     )
@@ -44,7 +44,7 @@ export default function Customer() {
 
 
   return (
-    <div className="p-10 text-xl flex flex-col gap-10 lg:w-2/3 m-auto">
+    <div className="p-10 text-xl flex flex-col gap-10 lg:w-1/2 m-auto">
       <div className="bg-white rounded-lg p-10 flex flex-col gap-4">
         <div className="flex justify-between">
           <p className="text-4xl font-semibold col-span-3">{customer?.name}</p>
@@ -93,9 +93,9 @@ export default function Customer() {
       <InvoiceView invoices={invoices.filter(e => e.customer == cid)}/>
       
 
-      <div className="col-span-4 border-2 gap-4 ml-auto flex">
+      <div className="col-span-4 gap-4 ml-auto flex">
         <Button outlined={true}  onClick={() => router.back()}>Back</Button>
-        <Button intent="danger"  onClick={()=>{}}>Delete customer</Button>
+        <Button intent="danger"  onClick={() => {}}>Delete customer</Button>
       </div>
       
     </div>

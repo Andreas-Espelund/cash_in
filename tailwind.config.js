@@ -9,7 +9,8 @@ module.exports = {
       colors:{
         primary: '#007ea7',
         secondary: '#003249',
-        neutral:'#e1eced',
+        neutral:'#F7F8FC',
+        success: '#357823',
         
       },
       gridTemplateColumns: {
