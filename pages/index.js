@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
@@ -8,8 +8,7 @@ import { CreateCustomerState } from '../atoms/createCustomerModalState'
 import { SettingsState } from '../atoms/settingsModalState'
 import { CustomersState } from '../atoms/customersAtom'
 import { UserState } from '../atoms/userAtom'
-import { fetchInvoicesByUser } from '../firebase'
-import { SingInPrompt, ListView, Piechart, Button, Invoice} from '../components/'
+import { SingInPrompt, Piechart, Button, Invoice} from '../components/'
 import { CoinIcon, NewUserIcon, SettingsIcon } from '../components/icons'
 import InvoiceView from '../components/InvoiceView'
 
@@ -115,6 +114,10 @@ function page() {
               )}
             </tbody>
           </table>
+          {customers.length == 0 &&
+          <div className="p-4 w-full text-center grid place-content-center italic text-zinc-400 text-md">
+            No customers to show
+          </div>}
         </div>
         <div className="hidden">
           {invoices.map(e => {
